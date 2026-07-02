@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* Color & Design Tokens */
-:root {
+:root, [data-theme='light'] {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   
   /* HSL Color Tokens - Sleek Slate & Royal Indigo Theme (Light) */
@@ -44,7 +44,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']) {
     /* HSL Color Tokens (Dark Mode) */
     --bg-primary: hsl(220, 24%, 7%);
     --bg-secondary: hsl(220, 20%, 11%);
@@ -76,6 +76,39 @@
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
   }
+}
+
+[data-theme='dark'] {
+  /* HSL Color Tokens (Explicit Dark Mode Override) */
+  --bg-primary: hsl(220, 24%, 7%);
+  --bg-secondary: hsl(220, 20%, 11%);
+  --bg-tertiary: hsl(220, 18%, 15%);
+  
+  --text-primary: hsl(220, 20%, 96%);
+  --text-secondary: hsl(220, 10%, 75%);
+  --text-muted: hsl(220, 8%, 50%);
+  
+  --accent: hsl(250, 95%, 70%);
+  --accent-hover: hsl(250, 95%, 65%);
+  --accent-light: hsl(250, 30%, 15%);
+  --accent-border: hsl(250, 30%, 25%);
+  
+  --border-color: hsl(220, 15%, 20%);
+  --border-focus: hsl(250, 84%, 50%);
+  
+  /* Status Colors */
+  --status-draft-bg: hsl(200, 40%, 15%);
+  --status-draft-text: hsl(200, 90%, 70%);
+  
+  --status-sent-bg: hsl(35, 40%, 15%);
+  --status-sent-text: hsl(35, 90%, 70%);
+  
+  --status-paid-bg: hsl(150, 30%, 14%);
+  --status-paid-text: hsl(150, 80%, 70%);
+  
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
 }
 
 /* Base Styles */

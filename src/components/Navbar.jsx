@@ -20,36 +20,35 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <NavLink to="/" className="navbar-brand">
-          <Receipt className="navbar-logo-icon" size={24} />
+    <nav className="bg-bg-secondary border-b border-border-color sticky top-0 z-50 backdrop-blur-md bg-opacity-90 transition-colors duration-250">
+      <div className="max-w-[1200px] mx-auto px-6 py-4 flex justify-between items-center">
+        <NavLink to="/" className="text-xl font-bold text-text-primary flex items-center gap-2 hover:opacity-90">
+          <Receipt className="text-accent" size={24} />
           <span>TechnoPixar Billing</span>
         </NavLink>
-        <div className="navbar-nav">
+        <div className="flex gap-6 items-center">
           <NavLink 
             to="/" 
-            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            className={({ isActive }) => `font-medium flex items-center gap-1.5 transition-colors duration-150 ${isActive ? 'text-accent' : 'text-text-secondary hover:text-accent'}`}
             end
           >
             <FileText size={18} />
-            <span>Invoices & Quotations</span>
+            <span className="hidden sm:inline">Invoices & Quotations</span>
           </NavLink>
           <NavLink 
             to="/new" 
-            className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            className={({ isActive }) => `font-medium flex items-center gap-1.5 transition-colors duration-150 ${isActive ? 'text-accent' : 'text-text-secondary hover:text-accent'}`}
           >
             <PlusCircle size={18} />
-            <span>Create New</span>
+            <span className="hidden sm:inline">Create New</span>
           </NavLink>
           
           <button 
             type="button" 
-            className="btn btn-secondary btn-icon-only" 
+            className="p-2 rounded-full border border-border-color bg-bg-tertiary hover:bg-border-color text-text-primary transition-colors duration-150 flex items-center justify-center cursor-pointer"
             onClick={toggleTheme}
             title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
             aria-label="Toggle theme"
-            style={{ marginLeft: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
             {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
           </button>

@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateInvoiceStatus, deleteInvoice } from '../store/slices/invoiceSlice';
-import { 
-  Eye, 
-  Trash2, 
-  Plus, 
-  Search, 
-  TrendingUp, 
-  DollarSign, 
-  FileText, 
+import {
+  Eye,
+  Trash2,
+  Plus,
+  Search,
+  TrendingUp,
+  DollarSign,
+  FileText,
   CheckCircle,
   Clock,
   Send
@@ -24,7 +24,6 @@ const InvoiceList = () => {
   const [filterType, setFilterType] = useState('All');
   const [filterStatus, setFilterStatus] = useState('All');
 
-  // Format currency helper
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -32,7 +31,6 @@ const InvoiceList = () => {
     }).format(amount);
   };
 
-  // Stats calculation
   const totalInvoiced = invoices.reduce((sum, inv) => sum + inv.grandTotal, 0);
   const totalPaid = invoices
     .filter(inv => inv.status === 'Paid')
@@ -41,13 +39,12 @@ const InvoiceList = () => {
     .filter(inv => inv.status !== 'Paid')
     .reduce((sum, inv) => sum + inv.grandTotal, 0);
 
-  // Filter invoices
   const filteredInvoices = invoices.filter((inv) => {
-    const matchesSearch = inv.clientName.toLowerCase().includes(search.toLowerCase()) || 
-                          inv.id.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = inv.clientName.toLowerCase().includes(search.toLowerCase()) ||
+      inv.id.toLowerCase().includes(search.toLowerCase());
     const matchesType = filterType === 'All' || inv.type === filterType;
     const matchesStatus = filterStatus === 'All' || inv.status === filterStatus;
-    
+
     return matchesSearch && matchesType && matchesStatus;
   });
 
@@ -63,88 +60,96 @@ const InvoiceList = () => {
 
   const getStatusBadgeClass = (status) => {
     switch (status) {
-      case 'Paid': return 'badge badge-paid';
-      case 'Sent': return 'badge badge-sent';
-      default: return 'badge badge-draft';
+      case 'Paid': return 'inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-status-paid-bg text-status-paid-text';
+      case 'Sent': return 'inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-status-sent-bg text-status-sent-text';
+      default: return 'inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-status-draft-bg text-status-draft-text';
     }
   };
 
   return (
-    <div className="invoice-list-page">
-      {/* Premium Dashboard Metrics */}
-      <div className="dashboard-header flex-between" style={{ marginBottom: '2rem' }}>
+    <div className="w-full">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
         <div>
-          <h1 style={{ margin: 0, fontSize: '1.75rem', fontWeight: 800 }}>Billing Dashboard</h1>
-          <p className="text-muted" style={{ fontSize: '0.9rem' }}>Manage your invoices, quotations, and financial documents.</p>
+          <h1 className="text-3xl font-extrabold tracking-tight text-text-primary">Billing Dashboard</h1>
+          <p className="text-text-muted text-sm mt-1">Manage your invoices, quotations, and financial documents.</p>
         </div>
-        <button className="btn btn-primary" onClick={() => navigate('/new')}>
+        <button
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-accent hover:bg-accent-hover text-white font-semibold rounded-md shadow-sm transition-all duration-150 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+          onClick={() => navigate('/new')}
+        >
           <Plus size={18} />
           Create New Document
         </button>
       </div>
 
-      <div className="form-grid" style={{ marginBottom: '2.5rem', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
-        <div className="card flex" style={{ gap: '1rem', alignItems: 'center', marginBottom: 0 }}>
-          <div style={{ backgroundColor: 'var(--accent-light)', padding: '0.75rem', borderRadius: 'var(--radius-md)' }}>
-            <TrendingUp size={24} style={{ color: 'var(--accent)' }} />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-bg-secondary border border-border-color rounded-xl p-6 shadow-sm flex items-center gap-4 transition-colors duration-250">
+          <div className="p-3.5 rounded-lg bg-accent-light/10 text-accent">
+            <TrendingUp size={24} />
           </div>
           <div>
-            <p className="text-muted" style={{ fontSize: '0.85rem', fontWeight: 500 }}>Total Documented</p>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 700 }}>{formatCurrency(totalInvoiced)}</h3>
+            <p className="text-text-muted text-xs font-medium uppercase tracking-wider">Total Documented</p>
+            <h3 className="text-2xl font-bold text-text-primary mt-1">{formatCurrency(totalInvoiced)}</h3>
           </div>
         </div>
 
-        <div className="card flex" style={{ gap: '1rem', alignItems: 'center', marginBottom: 0 }}>
-          <div style={{ backgroundColor: 'hsl(150, 100%, 95%)', padding: '0.75rem', borderRadius: 'var(--radius-md)' }}>
-            <DollarSign size={24} style={{ color: 'hsl(150, 80%, 25%)' }} />
+        <div className="bg-bg-secondary border border-border-color rounded-xl p-6 shadow-sm flex items-center gap-4 transition-colors duration-250">
+          <div className="p-3.5 rounded-lg bg-status-paid-bg text-status-paid-text">
+            <DollarSign size={24} />
           </div>
           <div>
-            <p className="text-muted" style={{ fontSize: '0.85rem', fontWeight: 500 }}>Total Paid Recieved</p>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--status-paid-text)' }}>{formatCurrency(totalPaid)}</h3>
+            <p className="text-text-muted text-xs font-medium uppercase tracking-wider">Total Paid Recieved</p>
+            <h3 className="text-2xl font-bold text-status-paid-text mt-1">{formatCurrency(totalPaid)}</h3>
           </div>
         </div>
 
-        <div className="card flex" style={{ gap: '1rem', alignItems: 'center', marginBottom: 0 }}>
-          <div style={{ backgroundColor: 'hsl(35, 100%, 95%)', padding: '0.75rem', borderRadius: 'var(--radius-md)' }}>
-            <Clock size={24} style={{ color: 'hsl(35, 90%, 35%)' }} />
+        <div className="bg-bg-secondary border border-border-color rounded-xl p-6 shadow-sm flex items-center gap-4 transition-colors duration-250">
+          <div className="p-3.5 rounded-lg bg-status-sent-bg text-status-sent-text">
+            <Clock size={24} />
           </div>
           <div>
-            <p className="text-muted" style={{ fontSize: '0.85rem', fontWeight: 500 }}>Outstanding Balance</p>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--status-sent-text)' }}>{formatCurrency(totalOutstanding)}</h3>
+            <p className="text-text-muted text-xs font-medium uppercase tracking-wider">Outstanding Balance</p>
+            <h3 className="text-2xl font-bold text-status-sent-text mt-1">{formatCurrency(totalOutstanding)}</h3>
           </div>
         </div>
       </div>
 
-      {/* Filters Toolbar */}
-      <div className="card" style={{ padding: '1.25rem', marginBottom: '1.5rem' }}>
-        <div className="form-grid" style={{ gridTemplateColumns: '2fr 1fr 1fr', alignItems: 'end' }}>
-          <div className="form-group" style={{ marginBottom: 0 }}>
-            <label className="form-label">Search Client or ID</label>
-            <div style={{ position: 'relative' }}>
+      <div className="bg-bg-secondary border border-border-color rounded-xl p-6 shadow-sm mb-6 transition-colors duration-250">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-text-secondary mb-1.5">Search Client or ID</label>
+            <div className="relative">
               <input
                 type="text"
                 placeholder="Search..."
-                className="form-control"
+                className="w-full pl-10 pr-4 py-2 rounded-md border border-border-color bg-bg-secondary text-text-primary focus:outline-none focus:border-border-focus focus:ring-3 focus:ring-accent/15 transition-all duration-150"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                style={{ paddingLeft: '2.5rem' }}
               />
-              <Search size={16} className="text-muted" style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)' }} />
+              <Search size={16} className="text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
             </div>
           </div>
 
-          <div className="form-group" style={{ marginBottom: 0 }}>
-            <label className="form-label">Type</label>
-            <select className="form-control" value={filterType} onChange={(e) => setFilterType(e.target.value)}>
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-text-secondary mb-1.5">Type</label>
+            <select
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-color bg-bg-secondary text-text-primary focus:outline-none focus:border-border-focus focus:ring-3 focus:ring-accent/15 transition-all duration-150 cursor-pointer"
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+            >
               <option value="All">All Types</option>
               <option value="Invoice">Invoices</option>
               <option value="Quotation">Quotations</option>
             </select>
           </div>
 
-          <div className="form-group" style={{ marginBottom: 0 }}>
-            <label className="form-label">Status</label>
-            <select className="form-control" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-text-secondary mb-1.5">Status</label>
+            <select
+              className="w-full px-3.5 py-2.5 rounded-md border border-border-color bg-bg-secondary text-text-primary focus:outline-none focus:border-border-focus focus:ring-3 focus:ring-accent/15 transition-all duration-150 cursor-pointer"
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+            >
               <option value="All">All Statuses</option>
               <option value="Draft">Draft</option>
               <option value="Sent">Sent</option>
@@ -154,72 +159,70 @@ const InvoiceList = () => {
         </div>
       </div>
 
-      {/* Listing Content */}
       {filteredInvoices.length === 0 ? (
-        <div className="card text-muted" style={{ textAlign: 'center', padding: '3rem 2rem' }}>
-          <FileText size={48} style={{ margin: '0 auto 1rem', display: 'block', opacity: 0.5 }} />
-          <h3>No Documents Found</h3>
-          <p style={{ marginTop: '0.5rem' }}>Try adjusting your filters or search query, or create a new invoice/quotation.</p>
+        <div className="bg-bg-secondary border border-border-color rounded-xl p-12 text-center text-text-muted transition-colors duration-250">
+          <FileText size={48} className="mx-auto mb-4 opacity-50 text-text-muted" />
+          <h3 className="text-lg font-bold text-text-primary">No Documents Found</h3>
+          <p className="text-sm mt-1">Try adjusting your filters or search query, or create a new invoice/quotation.</p>
         </div>
       ) : (
-        <div className="table-container">
-          <table className="table">
+        <div className="bg-bg-secondary border border-border-color rounded-xl shadow-sm overflow-x-auto mb-6 transition-colors duration-250">
+          <table className="w-full border-collapse text-left min-w-[900px]">
             <thead>
-              <tr>
-                <th>Document ID</th>
-                <th>Client Name</th>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Grand Total</th>
-                <th>Status</th>
-                <th>Quick Status Update</th>
-                <th className="text-right">Actions</th>
+              <tr className="bg-bg-tertiary/50 border-b border-border-color">
+                <th className="px-6 py-4 font-semibold text-text-secondary text-xs uppercase tracking-wider">Document ID</th>
+                <th className="px-6 py-4 font-semibold text-text-secondary text-xs uppercase tracking-wider">Client Name</th>
+                <th className="px-6 py-4 font-semibold text-text-secondary text-xs uppercase tracking-wider">Date</th>
+                <th className="px-6 py-4 font-semibold text-text-secondary text-xs uppercase tracking-wider">Type</th>
+                <th className="px-6 py-4 font-semibold text-text-secondary text-xs uppercase tracking-wider">Grand Total</th>
+                <th className="px-6 py-4 font-semibold text-text-secondary text-xs uppercase tracking-wider">Status</th>
+                <th className="px-6 py-4 font-semibold text-text-secondary text-xs uppercase tracking-wider">Quick Update</th>
+                <th className="px-6 py-4 font-semibold text-text-secondary text-xs uppercase tracking-wider text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredInvoices.map((invoice) => (
-                <tr key={invoice.id}>
-                  <td style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{invoice.id}</td>
-                  <td>{invoice.clientName}</td>
-                  <td className="text-muted">{invoice.date}</td>
-                  <td>
-                    <span style={{ fontWeight: 500, color: invoice.type === 'Invoice' ? 'var(--accent)' : 'var(--text-secondary)' }}>
+                <tr key={invoice.id} className="border-b border-border-color hover:bg-bg-tertiary/20 transition-colors">
+                  <td className="px-6 py-4 font-bold text-text-primary text-sm">{invoice.id}</td>
+                  <td className="px-6 py-4 text-text-primary text-sm font-medium">{invoice.clientName}</td>
+                  <td className="px-6 py-4 text-text-secondary text-sm">{invoice.date}</td>
+                  <td className="px-6 py-4 text-sm">
+                    <span className={`font-semibold ${invoice.type === 'Invoice' ? 'text-accent' : 'text-text-secondary'}`}>
                       {invoice.type}
                     </span>
                   </td>
-                  <td style={{ fontWeight: 700 }}>{formatCurrency(invoice.grandTotal)}</td>
-                  <td>
+                  <td className="px-6 py-4 font-bold text-text-primary text-sm">{formatCurrency(invoice.grandTotal)}</td>
+                  <td className="px-6 py-4 text-sm">
                     <span className={getStatusBadgeClass(invoice.status)}>
                       {invoice.status}
                     </span>
                   </td>
-                  <td>
+                  <td className="px-6 py-4 text-sm">
                     <select
-                      className="form-control"
+                      className="px-2 py-1 rounded border border-border-color bg-bg-secondary text-text-primary focus:outline-none focus:border-border-focus text-xs font-semibold cursor-pointer"
                       value={invoice.status}
                       onChange={(e) => handleStatusChange(invoice.id, e.target.value)}
-                      style={{ padding: '0.25rem 0.5rem', width: 'auto', fontSize: '0.85rem' }}
                     >
                       <option value="Draft">Draft</option>
                       <option value="Sent">Sent</option>
                       <option value="Paid">Paid</option>
                     </select>
                   </td>
-                  <td className="text-right">
-                    <div className="flex gap-2" style={{ justifyContent: 'flex-end' }}>
-                      <button 
-                        className="btn btn-secondary btn-icon-only" 
+                  <td className="px-6 py-4 text-sm text-right">
+                    <div className="flex gap-2 justify-end">
+                      <button
+                        className="p-2 rounded-full border border-border-color bg-bg-tertiary hover:bg-border-color text-text-primary transition-colors flex items-center justify-center cursor-pointer"
                         onClick={() => navigate(`/preview/${invoice.id}`)}
                         title="View Preview"
                       >
-                        <Eye size={16} />
+                        <Eye size={15} />
                       </button>
-                      <button 
-                        className="btn btn-danger btn-icon-only" 
+                      <button
+                        className="p-2 rounded-full border border-border-color bg-bg-tertiary hover:border-color text-red-500 hover:bg-red-500/10 transition-colors flex items-center justify-center cursor-pointer"
                         onClick={() => handleDelete(invoice.id)}
                         title="Delete Document"
                       >
-                        <Trash2 size={16} />
+                        <Trash2 size={15} />
                       </button>
                     </div>
                   </td>

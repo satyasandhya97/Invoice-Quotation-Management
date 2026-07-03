@@ -17,12 +17,10 @@ const InvoiceForm = () => {
     { id: '1', description: '', qty: 1, unitPrice: 0 }
   ]);
 
-  // Real-time calculation using useMemo
   const totals = useMemo(() => {
     return calculateTotals(items, taxPercent, discountPercent);
   }, [items, taxPercent, discountPercent]);
 
-  // Item management actions
   const handleAddItem = () => {
     setItems([
       ...items,
@@ -51,7 +49,6 @@ const InvoiceForm = () => {
     }));
   };
 
-  // Form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -78,7 +75,6 @@ const InvoiceForm = () => {
     navigate('/');
   };
 
-  // Currency helper
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -87,76 +83,74 @@ const InvoiceForm = () => {
   };
 
   return (
-    <div className="invoice-form-page">
-      {/* Page Header */}
-      <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <button className="btn btn-secondary btn-icon-only" onClick={() => navigate('/')}>
+    <div className="w-full">
+      <div className="flex items-center gap-4 mb-6">
+        <button
+          className="p-2 rounded-full border border-border-color bg-bg-tertiary hover:bg-border-color text-text-primary transition-colors flex items-center justify-center cursor-pointer"
+          onClick={() => navigate('/')}
+        >
           <ArrowLeft size={16} />
         </button>
         <div>
-          <h1 style={{ margin: 0, fontSize: '1.75rem', fontWeight: 800 }}>Create Document</h1>
-          <p className="text-muted" style={{ fontSize: '0.9rem' }}>Generate a professional invoice or quotation.</p>
+          <h1 className="text-3xl font-extrabold tracking-tight text-text-primary">Create Document</h1>
+          <p className="text-text-muted text-sm mt-1">Generate a professional invoice or quotation.</p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2.5fr 1.5fr', gap: '2rem' }}>
-          
-          {/* Main Form Area */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            
-            {/* General Info Card */}
-            <div className="card" style={{ marginBottom: 0 }}>
-              <h2 className="card-title">Document Settings</h2>
-              
-              <div className="form-grid">
-                <div className="form-group">
-                  <label className="form-label">Document Type</label>
-                  <div style={{ display: 'flex', gap: '1rem' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontWeight: 500 }}>
-                      <input 
-                        type="radio" 
-                        name="docType" 
-                        value="Invoice" 
-                        checked={type === 'Invoice'} 
-                        onChange={() => setType('Invoice')} 
-                        style={{ accentColor: 'var(--accent)' }}
+        <div className="grid grid-cols-1 lg:grid-cols-[2.5fr_1.5fr] gap-8">
+          <div className="flex flex-col gap-6">
+            <div className="bg-bg-secondary border border-border-color rounded-xl p-6 shadow-sm transition-colors duration-250">
+              <h2 className="text-lg font-bold text-text-primary mb-5">Document Settings</h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-text-secondary mb-1.5">Document Type</label>
+                  <div className="flex gap-6 mt-1.5">
+                    <label className="flex items-center gap-2 cursor-pointer font-medium text-text-primary">
+                      <input
+                        type="radio"
+                        name="docType"
+                        value="Invoice"
+                        checked={type === 'Invoice'}
+                        onChange={() => setType('Invoice')}
+                        className="w-4 h-4 accent-accent cursor-pointer"
                       />
                       Invoice
                     </label>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontWeight: 500 }}>
-                      <input 
-                        type="radio" 
-                        name="docType" 
-                        value="Quotation" 
-                        checked={type === 'Quotation'} 
+                    <label className="flex items-center gap-2 cursor-pointer font-medium text-text-primary">
+                      <input
+                        type="radio"
+                        name="docType"
+                        value="Quotation"
+                        checked={type === 'Quotation'}
                         onChange={() => setType('Quotation')}
-                        style={{ accentColor: 'var(--accent)' }}
+                        className="w-4 h-4 accent-accent cursor-pointer"
                       />
                       Quotation
                     </label>
                   </div>
                 </div>
 
-                <div className="form-group">
-                  <label className="form-label" htmlFor="doc-date">Issue Date</label>
-                  <input 
-                    type="date" 
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-text-secondary mb-1.5" htmlFor="doc-date">Issue Date</label>
+                  <input
+                    type="date"
                     id="doc-date"
-                    className="form-control" 
-                    value={date} 
-                    onChange={(e) => setDate(e.target.value)} 
+                    className="w-full px-3.5 py-2 rounded-md border border-border-color bg-bg-secondary text-text-primary focus:outline-none focus:border-border-focus focus:ring-3 focus:ring-accent/15 transition-all duration-150"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
                   />
                 </div>
               </div>
 
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label" htmlFor="client-name">Client Name</label>
-                <input 
-                  type="text" 
+              <div className="flex flex-col">
+                <label className="text-sm font-medium text-text-secondary mb-1.5" htmlFor="client-name">Client Name</label>
+                <input
+                  type="text"
                   id="client-name"
-                  placeholder="Enter client or company name" 
-                  className="form-control"
+                  placeholder="Enter client or company name"
+                  className="w-full px-3.5 py-2.5 rounded-md border border-border-color bg-bg-secondary text-text-primary focus:outline-none focus:border-border-focus focus:ring-3 focus:ring-accent/15 transition-all duration-150"
                   value={clientName}
                   onChange={(e) => setClientName(e.target.value)}
                   required
@@ -164,72 +158,73 @@ const InvoiceForm = () => {
               </div>
             </div>
 
-            {/* Line Items Card */}
-            <div className="card" style={{ marginBottom: 0 }}>
-              <div className="flex-between" style={{ marginBottom: '1rem' }}>
-                <h2 className="card-title" style={{ margin: 0 }}>Line Items</h2>
-                <button type="button" className="btn btn-secondary" onClick={handleAddItem} style={{ padding: '0.4rem 0.8rem', fontSize: '0.85rem' }}>
-                  <Plus size={16} />
+            <div className="bg-bg-secondary border border-border-color rounded-xl p-6 shadow-sm transition-colors duration-250">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-bold text-text-primary">Line Items</h2>
+                <button
+                  type="button"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 border border-border-color bg-bg-tertiary hover:bg-border-color text-text-primary text-xs font-semibold rounded transition-all duration-150 cursor-pointer"
+                  onClick={handleAddItem}
+                >
+                  <Plus size={14} />
                   Add Line Item
                 </button>
               </div>
-
-              <div className="table-container" style={{ margin: 0, border: 'none', boxShadow: 'none' }}>
-                <table className="table" style={{ width: '100%' }}>
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse text-left min-w-[700px]">
                   <thead>
-                    <tr>
-                      <th style={{ width: '50%' }}>Description</th>
-                      <th style={{ width: '15%' }}>Qty</th>
-                      <th style={{ width: '20%' }}>Unit Price ($)</th>
-                      <th style={{ width: '15%' }}>Total ($)</th>
-                      <th style={{ width: '10%', textAlign: 'right' }}>Actions</th>
+                    <tr className="border-b border-border-color">
+                      <th className="py-3 font-semibold text-text-secondary text-xs uppercase tracking-wider w-[45%]">Description</th>
+                      <th className="py-3 font-semibold text-text-secondary text-xs uppercase tracking-wider text-right w-[15%]">Qty</th>
+                      <th className="py-3 font-semibold text-text-secondary text-xs uppercase tracking-wider text-right w-[20%]">Unit Price ($)</th>
+                      <th className="py-3 font-semibold text-text-secondary text-xs uppercase tracking-wider text-right w-[15%]">Total ($)</th>
+                      <th className="py-3 font-semibold text-text-secondary text-xs uppercase tracking-wider text-right w-[5%]"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {items.map((item, index) => (
-                      <tr key={item.id}>
-                        <td>
+                    {items.map((item) => (
+                      <tr key={item.id} className="border-b border-border-color last:border-0">
+                        <td className="py-3 pr-2">
                           <input
                             type="text"
                             placeholder="Describe the product or service"
-                            className="form-control"
+                            className="w-full px-3 py-1.5 rounded border border-border-color bg-bg-secondary text-text-primary focus:outline-none focus:border-border-focus transition-all text-sm"
                             value={item.description}
                             onChange={(e) => handleItemChange(item.id, 'description', e.target.value)}
                             required
                           />
                         </td>
-                        <td>
+                        <td className="py-3 px-2">
                           <input
                             type="number"
                             min="1"
-                            className="form-control text-right"
+                            className="w-full px-3 py-1.5 rounded border border-border-color bg-bg-secondary text-text-primary focus:outline-none focus:border-border-focus text-right text-sm"
                             value={item.qty}
                             onChange={(e) => handleItemChange(item.id, 'qty', e.target.value)}
                             required
                           />
                         </td>
-                        <td>
+                        <td className="py-3 px-2">
                           <input
                             type="number"
                             step="0.01"
                             min="0"
                             placeholder="0.00"
-                            className="form-control text-right"
+                            className="w-full px-3 py-1.5 rounded border border-border-color bg-bg-secondary text-text-primary focus:outline-none focus:border-border-focus text-right text-sm"
                             value={item.unitPrice || ''}
                             onChange={(e) => handleItemChange(item.id, 'unitPrice', e.target.value)}
                             required
                           />
                         </td>
-                        <td style={{ fontWeight: 600, paddingRight: '1rem' }} className="text-right">
+                        <td className="py-3 pl-2 text-right font-semibold text-text-primary text-sm">
                           {formatCurrency(item.qty * item.unitPrice)}
                         </td>
-                        <td style={{ textAlign: 'right' }}>
+                        <td className="py-3 text-right pl-2">
                           <button
                             type="button"
-                            className="btn btn-danger btn-icon-only"
+                            className="p-1.5 rounded text-red-500 hover:bg-red-500/10 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                             onClick={() => handleRemoveItem(item.id)}
                             disabled={items.length <= 1}
-                            style={{ opacity: items.length <= 1 ? 0.35 : 1, cursor: items.length <= 1 ? 'not-allowed' : 'pointer' }}
                             title="Remove Line Item"
                           >
                             <Trash size={14} />
@@ -241,93 +236,84 @@ const InvoiceForm = () => {
                 </table>
               </div>
             </div>
-
-            {/* Calculations Card */}
-            <div className="card" style={{ marginBottom: 0 }}>
-              <h2 className="card-title">Taxes & Discounts</h2>
-              <div className="form-grid">
-                <div className="form-group">
-                  <label className="form-label" htmlFor="tax-rate">Tax Rate (%)</label>
+            <div className="bg-bg-secondary border border-border-color rounded-xl p-6 shadow-sm transition-colors duration-250">
+              <h2 className="text-lg font-bold text-text-primary mb-5">Taxes & Discounts</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-text-secondary mb-1.5" htmlFor="tax-rate">Tax Rate (%)</label>
                   <input
                     type="number"
                     id="tax-rate"
                     min="0"
                     max="100"
-                    className="form-control"
+                    className="w-full px-3.5 py-2 rounded-md border border-border-color bg-bg-secondary text-text-primary focus:outline-none focus:border-border-focus focus:ring-3 focus:ring-accent/15 transition-all duration-150"
                     value={taxPercent}
                     onChange={(e) => setTaxPercent(parseFloat(e.target.value) || 0)}
                   />
                 </div>
-                <div className="form-group">
-                  <label className="form-label" htmlFor="discount-rate">Discount Rate (%)</label>
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-text-secondary mb-1.5" htmlFor="discount-rate">Discount Rate (%)</label>
                   <input
                     type="number"
                     id="discount-rate"
                     min="0"
                     max="100"
-                    className="form-control"
+                    className="w-full px-3.5 py-2 rounded-md border border-border-color bg-bg-secondary text-text-primary focus:outline-none focus:border-border-focus focus:ring-3 focus:ring-accent/15 transition-all duration-150"
                     value={discountPercent}
                     onChange={(e) => setDiscountPercent(parseFloat(e.target.value) || 0)}
                   />
                 </div>
               </div>
             </div>
-
           </div>
-
-          {/* Real-time Summary Card */}
           <div>
-            <div className="card" style={{ position: 'sticky', top: '100px' }}>
-              <h2 className="card-title" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem' }}>Summary Preview</h2>
-              
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', marginTop: '1.25rem' }}>
-                <div className="flex-between">
-                  <span className="text-muted">Document Type:</span>
-                  <span style={{ fontWeight: 600 }}>{type}</span>
+            <div className="bg-bg-secondary border border-border-color rounded-xl p-6 shadow-md sticky top-24 transition-colors duration-250">
+              <h2 className="text-lg font-bold text-text-primary pb-3 border-b border-border-color">Summary Preview</h2>
+              <div className="flex flex-col gap-3.5 mt-5">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-text-muted">Document Type:</span>
+                  <span className="font-semibold text-text-primary">{type}</span>
                 </div>
-                <div className="flex-between">
-                  <span className="text-muted">Client Name:</span>
-                  <span style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '180px' }}>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-text-muted">Client Name:</span>
+                  <span className="font-semibold text-text-primary truncate max-w-[150px]" title={clientName || 'Draft Client'}>
                     {clientName || 'Draft Client'}
                   </span>
                 </div>
-                <div className="flex-between">
-                  <span className="text-muted">Date:</span>
-                  <span style={{ fontWeight: 600 }}>{date}</span>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-text-muted">Date:</span>
+                  <span className="font-semibold text-text-primary">{date}</span>
                 </div>
-
-                <hr style={{ border: 'none', borderTop: '1px solid var(--border-color)', margin: '0.5rem 0' }} />
-
-                <div className="flex-between">
-                  <span className="text-muted">Subtotal:</span>
-                  <span style={{ fontWeight: 600 }}>{formatCurrency(totals.subtotal)}</span>
+                <hr className="border-border-color my-1" />
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-text-muted">Subtotal:</span>
+                  <span className="font-semibold text-text-primary">{formatCurrency(totals.subtotal)}</span>
                 </div>
-                <div className="flex-between">
-                  <span className="text-muted">Discount ({discountPercent}%):</span>
-                  <span style={{ fontWeight: 600, color: 'var(--status-draft-text)' }}>-{formatCurrency(totals.discountAmount)}</span>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-text-muted">Discount ({discountPercent}%):</span>
+                  <span className="font-semibold text-status-draft-text">-{formatCurrency(totals.discountAmount)}</span>
                 </div>
-                <div className="flex-between">
-                  <span className="text-muted">Tax ({taxPercent}%):</span>
-                  <span style={{ fontWeight: 600 }}>+{formatCurrency(totals.taxAmount)}</span>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-text-muted">Tax ({taxPercent}%):</span>
+                  <span className="font-semibold text-text-primary">+{formatCurrency(totals.taxAmount)}</span>
                 </div>
-
-                <hr style={{ border: 'none', borderTop: '1px solid var(--border-color)', margin: '0.5rem 0' }} />
-
-                <div className="flex-between" style={{ fontSize: '1.15rem' }}>
-                  <span style={{ fontWeight: 700 }}>Grand Total:</span>
-                  <span style={{ fontWeight: 800, color: 'var(--accent)' }}>{formatCurrency(totals.grandTotal)}</span>
+                <hr className="border-border-color my-1" />
+                <div className="flex justify-between items-center text-base font-bold">
+                  <span className="text-text-primary">Grand Total:</span>
+                  <span className="text-accent text-lg">{formatCurrency(totals.grandTotal)}</span>
                 </div>
               </div>
-
-              <div style={{ marginTop: '2rem' }}>
-                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+              <div className="mt-8">
+                <button
+                  type="submit"
+                  className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg shadow-sm transition-all duration-150 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                >
                   <Save size={18} />
                   Save {type}
                 </button>
               </div>
             </div>
           </div>
-
         </div>
       </form>
     </div>

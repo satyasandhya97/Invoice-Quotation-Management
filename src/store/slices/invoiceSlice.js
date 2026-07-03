@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Helper to calculate totals for an invoice
 export const calculateTotals = (items, taxPercent = 0, discountPercent = 0) => {
   const subtotal = items.reduce((sum, item) => sum + (item.qty * item.unitPrice), 0);
   const discountAmount = subtotal * (discountPercent / 100);
@@ -90,7 +89,7 @@ const invoiceSlice = createSlice({
         items,
         taxPercent,
         discountPercent,
-        status: 'Draft', // default status
+        status: 'Draft',
         ...calculated
       });
     },

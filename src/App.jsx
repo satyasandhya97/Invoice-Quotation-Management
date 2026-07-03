@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
 
-// Lazy-loaded pages
 const InvoiceList = lazy(() => import('./pages/InvoiceList'));
 const InvoiceForm = lazy(() => import('./pages/InvoiceForm'));
 const InvoiceDetail = lazy(() => import('./pages/InvoiceDetail'));
@@ -12,9 +11,9 @@ const InvoiceDetail = lazy(() => import('./pages/InvoiceDetail'));
 function App() {
   return (
     <BrowserRouter>
-      <div className="app-container">
+      <div className="flex flex-col min-h-screen bg-bg-primary text-text-primary transition-colors duration-250">
         <Navbar />
-        <main className="main-content">
+        <main className="flex-1 w-full max-w-[1200px] mx-auto px-4 sm:px-6 py-8">
           <ErrorBoundary>
             <Suspense fallback={<LoadingSpinner message="Loading your invoice console..." />}>
               <Routes>
@@ -22,9 +21,9 @@ function App() {
                 <Route path="/new" element={<InvoiceForm />} />
                 <Route path="/preview/:id" element={<InvoiceDetail />} />
                 <Route path="*" element={
-                  <div style={{ textAlign: 'center', padding: '3rem' }}>
-                    <h2>404 - Page Not Found</h2>
-                    <p className="text-muted">The requested view does not exist.</p>
+                  <div className="text-center py-12">
+                    <h2 className="text-2xl font-bold text-text-primary">404 - Page Not Found</h2>
+                    <p className="text-text-muted mt-2">The requested view does not exist.</p>
                   </div>
                 } />
               </Routes>

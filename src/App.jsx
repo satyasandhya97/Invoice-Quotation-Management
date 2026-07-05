@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
+import Footer from './components/Footer';
 
 const InvoiceList = lazy(() => import('./pages/InvoiceList'));
 const InvoiceForm = lazy(() => import('./pages/InvoiceForm'));
@@ -30,6 +31,7 @@ function App() {
             </Suspense>
           </ErrorBoundary>
         </main>
+        <Footer />
       </div>
     </BrowserRouter>
   );
